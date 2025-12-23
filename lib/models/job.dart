@@ -27,7 +27,6 @@ class Job {
   }
 }
 
-// 🔹 擴充至 50 筆真實感職缺
 final List<Job> allJobs = [
   // 科技/軟體業
   Job(id: "1", title: "AI 模型訓練實習生", company: "Google Taiwan", location: "台北市", description: "協助 LLM 繁體中文語料清洗與模型評估。"),
@@ -62,14 +61,13 @@ final List<Job> allJobs = [
   Job(id: "24", title: "影音剪輯實習生", company: "Vogue Taiwan", location: "台北市", description: "負責時尚活動短片剪輯與社群限時動態設計。"),
   Job(id: "25", title: "產品管理(PM)助理", company: "PChome", location: "台北市", description: "撰寫產品功能需求規格書 (PRD) 與跨部門溝通。"),
 
-  // 更多新創與其他
+  
   Job(id: "26", title: "Python 爬蟲實習生", company: "關鍵評論網", location: "台北市", description: "自動化抓取各類媒體新聞並進行關鍵字輿情分析。"),
   Job(id: "27", title: "產品設計助理", company: "Gogoro", location: "桃園市", description: "參與智慧電池交換站操作介面優化設計。"),
   Job(id: "28", title: "iOS 開發實習生", company: "17Live", location: "台北市", description: "協助直播軟體新功能開發與 Bug 修補。"),
   Job(id: "29", title: "大數據分析實習生", company: "Vpon 威朋", location: "台北市", description: "處理跨國行動數據並產出視覺化商業洞察報告。"),
   Job(id: "30", title: "App 安全測試助理", company: "奧義智慧", location: "台北市", description: "針對移動裝置進行滲透測試與安全漏洞回報。"),
   
-  // 繼續填充至 50 筆
   Job(id: "31", title: "HR 招募實習生", company: "LinkedIn Taiwan", location: "台北市", description: "協助篩選履歷與安排面試流程，優化求職者體驗。"),
   Job(id: "32", title: "自動化腳本開發", company: "研華科技", location: "台北市", description: "為工業電腦產線設計自動化測試腳本。"),
   Job(id: "33", title: "行銷數據工程師助理", company: "Appier", location: "台北市", description: "利用 AI 技術協助企業進行精準行銷數據處理。"),
