@@ -1,0 +1,21 @@
+name: jobtruth_frontend_flutter
+description: Flutter frontend scaffold for JobTruth (swipe cards, jobs, messages, profile)
+publish_to: 'none'
+version: 0.0.1
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  http: ^0.13.5
+  shared_preferences: ^2.5.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
