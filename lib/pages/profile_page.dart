@@ -41,7 +41,73 @@ class _ProfilePageState extends State<ProfilePage> {
     await prefs.setInt('saved_color', (data['themeColor'] as Color).value);
   }
 
-  // 🚀 優化後的對話框：確保 context 使用正確
+  // 🚀 新增功能：履歷內容彈窗
+  void _showResumeDetail(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        height: MediaQuery.of(context).size.height * 0.85,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+        ),
+        padding: const EdgeInsets.all(24),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(width: 50, height: 5, decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(10))),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Icon(Icons.badge, color: themeColor),
+                  const SizedBox(width: 10),
+                  const Text("我的雲端求職履歷", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                ],
+              ),
+              const Divider(height: 30),
+              _buildResumeSection("基本資料", "姓名：$name\n學校：$school\n應徵目標：軟體工程實習生 / AI 應用開發"),
+              _buildResumeSection("專業核心能力", "• ${skills.join('、')}\n• RESTful API 整合\n• Git 版本控制與團隊協作"),
+              _buildResumeSection("專案成就", "【AI 職位媒合 App】\n獨立使用 Flutter 實作，整合 AI 安全評估機制，提供流暢的滑卡找工作體驗。"),
+              _buildResumeSection("自我期許", "目前就讀於北科大資工系，專注於開發具備使用者溫度的應用程式，希望能將 AI 技術應用於解決人力資源媒合的痛點。"),
+              const SizedBox(height: 30),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: themeColor, 
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))
+                  ),
+                  child: const Text("關閉並返回", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildResumeSection(String title, String content) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: themeColor)),
+          const SizedBox(height: 8),
+          Text(content, style: const TextStyle(fontSize: 15, height: 1.6, color: Colors.black87)),
+        ],
+      ),
+    );
+  }
+
   void _showJobSearchTips(BuildContext context) {
     showGeneralDialog(
       context: context,
@@ -71,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(ctx).pop(), // 使用對話框自己的 ctx 關閉
+            onPressed: () => Navigator.of(ctx).pop(),
             child: Text("我知道了", style: TextStyle(color: themeColor, fontWeight: FontWeight.bold)),
           ),
         ],
@@ -113,21 +179,34 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
             const SizedBox(height: 25),
+            _buildSectionTitle("我的職業檔案"),
+            
+            // 🚀 重點：新增的履歷入口
+            _buildProfileTile(
+              Icons.description, 
+              "我的標準履歷", 
+              subtitle: "點擊查看詳細求職內容", 
+              onTap: () => _showResumeDetail(context),
+            ),
+
+            const SizedBox(height: 10),
             _buildSectionTitle("專業技能"),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Wrap(
-                spacing: 8,
-                children: skills.map((s) => Chip(
-                  label: Text(s, style: TextStyle(color: themeColor)),
-                  backgroundColor: themeColor.withOpacity(0.1),
-                )).toList(),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Wrap(
+                  spacing: 8,
+                  children: skills.map((s) => Chip(
+                    label: Text(s, style: TextStyle(color: themeColor)),
+                    backgroundColor: themeColor.withOpacity(0.1),
+                    shape: StadiumBorder(side: BorderSide(color: themeColor.withOpacity(0.2))),
+                  )).toList(),
+                ),
               ),
             ),
             const SizedBox(height: 20),
             _buildSectionTitle("系統設定與支援"),
-            
-            // 編輯按鈕
             _buildProfileTile(
               Icons.settings, 
               "個人資料編輯", 
@@ -150,24 +229,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 }
               }
             ),
-            
-            // 🚀 修正點：加上 Builder 確保 context 正確傳遞
             Builder(
               builder: (innerContext) => _buildProfileTile(
                 Icons.help_outline, 
                 "幫助與支援", 
                 subtitle: "如何有效找工作？點我查看秘訣",
-                onTap: () {
-                  print("觸發對話框"); // 可以在 Debug Console 看到是否有執行
-                  _showJobSearchTips(innerContext);
-                },
+                onTap: () => _showJobSearchTips(innerContext),
               ),
             ),
             const SizedBox(height: 40),
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNav(selectedIndex: 3),
+      bottomNavigationBar: const BottomNav(selectedIndex: 2), // 修正為 2 (對應 Message:0, Swipe:1, Profile:2)
     );
   }
 
@@ -194,7 +268,7 @@ class _ProfilePageState extends State<ProfilePage> {
       title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
       subtitle: subtitle != null ? Text(subtitle, style: const TextStyle(fontSize: 13)) : null,
       trailing: const Icon(Icons.chevron_right, size: 20),
-      onTap: onTap, // 確保 onTap 被正確連接
+      onTap: onTap,
     );
   }
 }
